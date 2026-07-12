@@ -63,44 +63,44 @@ resource "aws_ami_from_instance" "main" {                               # Your c
   )
 }
 
-# resource allows the creation of an lunch template
-resource "aws_launch_template" "main" {
-  name = "${local.common_name}"    # form catalogue ami id
+# # resource allows the creation of an lunch template
+# resource "aws_launch_template" "main" {
+#   name = "${local.common_name}"    # form catalogue ami id
 
-  image_id = aws_ami_from_instance.main.id
+#   image_id = aws_ami_from_instance.main.id
 
-  instance_initiated_shutdown_behavior = "terminate"  # we get 2 options stop or terminate, we dont use stop because we have to pay extra money
+#   instance_initiated_shutdown_behavior = "terminate"  # we get 2 options stop or terminate, we dont use stop because we have to pay extra money
 
-  instance_type = "t3.micro"
+#   instance_type = "t3.micro"
 
-  vpc_security_group_ids = [local.sg_id]
+#   vpc_security_group_ids = [local.sg_id]
 
-  update_default_version = true  # if lunch template is updated then take eww template by defult  
+#   update_default_version = true  # if lunch template is updated then take eww template by defult  
 
-   # Once the instances are created, these will become instance tags
-  tag_specifications {
-    resource_type = "instance"
+#    # Once the instances are created, these will become instance tags
+#   tag_specifications {
+#     resource_type = "instance"
 
-    tags = merge(
-      {
-          Name = "${local.common_name}-${var.app_version}-${aws_instance.main.id}"
-      },
-      local.common_tags
-    )
-  }
+#     tags = merge(
+#       {
+#           Name = "${local.common_name}-${var.app_version}-${aws_instance.main.id}"
+#       },
+#       local.common_tags
+#     )
+#   }
 
-  # Once the instances are created, these will become volume tags
-  tag_specifications {
-    resource_type = "volume"
+#   # Once the instances are created, these will become volume tags
+#   tag_specifications {
+#     resource_type = "volume"
 
-    tags = merge(
-      {
-          Name = "${local.common_name}-${var.app_version}-${aws_instance.main.id}"
-      },
-      local.common_tags
-    )
-  }  
-}
+#     tags = merge(
+#       {
+#           Name = "${local.common_name}-${var.app_version}-${aws_instance.main.id}"
+#       },
+#       local.common_tags
+#     )
+#   }  
+# }
 
 # # resource allows the creation of an Target group
 # resource "aws_lb_target_group" "main" {  # target consist of instances 
