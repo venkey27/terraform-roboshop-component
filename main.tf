@@ -210,14 +210,14 @@ resource "aws_lb_listener_rule" "main" { # you are telling the Application Load 
   }    # this condition evaluates to True.
 }
 
-# resource "terraform_data" "catalogue_delete" { # to delete the 1st stopped catalogue instance to create AMI
-#   triggers_replace = [
-#     aws_instance.catalogue.id
-#   ]
-#   depends_on = [aws_autoscaling_policy.catalogue]
+resource "terraform_data" "main_delete" { # to delete the 1st stopped catalogue instance to create AMI
+  triggers_replace = [
+    aws_instance.main.id
+  ]
+  depends_on = [aws_autoscaling_policy.main]
 
-#   # executes where terraform is running
-#   provisioner "local-exec" {
-#     command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
-#   }
-# }  # Terraform provisioners (like local-exec), the command argument always requires a string, not a list.
+  # executes where terraform is running
+  provisioner "local-exec" {
+    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.main.id}"
+  }
+}  # Terraform provisioners (like local-exec), the command argument always requires a string, not a list.
