@@ -116,7 +116,7 @@ resource "aws_lb_target_group" "main" {  # target consist of instances
     interval = 10               # every 10 seconds health check will done
     matcher = "200-299"
     path = var.component == "frontend" ? "/" : "/health"  # if component is frontend then hralth "/", if components are backends then health "/health"         
-    port = 8080
+    port = var.component == "frontend" ? "80" : "8080"
     protocol = "HTTP"
     timeout = 5                 # response should come in 5 seconds
     unhealthy_threshold = 2     #  2 consecutive  health check fails then instance is not in good condition
@@ -147,7 +147,7 @@ resource "aws_autoscaling_group" "main" {
     preferences {
       min_healthy_percentage = 50
     }
-    triggers = ["launch_template"]
+    triggers = ["launch_template"] # it tells the Auto Scaling Group (ASG): "If the launch template changes (e.g., you update the AMI, instance type, or user data), automatically trigger a rolling replacement of all the ec2 instances currently running in the group."
   }
 
   dynamic "tag" {
