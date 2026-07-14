@@ -100,7 +100,15 @@ resource "aws_launch_template" "main" {
       local.common_tags
     )
   }  
+
+    tags = merge(
+      {
+          Name = "${local.common_name}-${var.app_version}-${aws_instance.main.id}"
+      },
+      local.common_tags
+  )
 }
+
 
 # resource allows the creation of an Target group
 resource "aws_lb_target_group" "main" {  # target consist of instances 
